@@ -57,7 +57,7 @@ const plugins = [
       image: path.resolve(imgSpritePath, 'sprite.png'),
       css: path.resolve(sassPath, 'vendor/spritesmith.scss'),
     },
-    //retina: '@2x',
+    // retina: '@2x',
     spritesmithOptions: {
       algorithm: 'binary-tree',
       padding: 20,
