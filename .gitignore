@@ -5,3 +5,4 @@ build
 .module-cache
 *.log*
 _nogit
+source/scss/vendor/sprite*

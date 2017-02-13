@@ -18,14 +18,15 @@ body {
 }
 
 .BackgroundImgExample {
+  @include sprite($book1);
   width: 250px;
   height: 141px;
-  background: url(../assets/img/book1.jpg) no-repeat;
   background-size: 100% auto;
 }
 
 .ImgExample {
   width: 250px;
+  @include sprite($book2);
 }
 
 hr {
