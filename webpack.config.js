@@ -12,7 +12,9 @@ const isProduction = nodeEnv === 'production';
 
 const jsSourcePath = path.join(__dirname, './source/js');
 const buildPath = path.join(__dirname, './build');
-const imgPath = path.join(__dirname, './source/assets/img');
+const imgPath = path.join(__dirname, './source/assets/img/raw');
+const imgSpritePath = path.join(__dirname, './source/assets');
+const sassPath = path.join(__dirname, './source/scss');
 const sourcePath = path.join(__dirname, './source');
 
 // Common plugins
@@ -48,14 +50,21 @@ const plugins = [
   }),
   new SpritesmithPlugin({
     src: {
-      cwd: path.resolve(imgPath, '/'),
-      glob: '*.png',
+      cwd: path.resolve(imgPath),
+      glob: '*.{png,jpg}',
     },
     target: {
-      image: path.resolve(buildPath, 'assets/images/spritesmith-generated/sprite.png'),
-      css: path.resolve(buildPath, 'assets//sass/vendor/spritesmith.scss'),
+      image: path.resolve(imgSpritePath, 'sprite.png'),
+      css: path.resolve(sassPath, 'vendor/spritesmith.scss'),
     },
-    retina: '@2x',
+    //retina: '@2x',
+    spritesmithOptions: {
+      algorithm: 'binary-tree',
+      padding: 20,
+    },
+    apiOptions: {
+      cssImageRef: '/assets/sprite.png',
+    },
   }),
 ];
 
@@ -68,11 +77,11 @@ const rules = [
       'babel-loader',
     ],
   },
-  {
-    test: /\.(png|gif|jpg|svg)$/,
-    include: imgPath,
-    use: 'url-loader?limit=20480&name=assets/[name]-[hash].[ext]',
-  },
+  // {
+  //   test: /\.(png|gif|jpg|svg)$/,
+  //   include: imgSpritePath,
+  //   use: 'url-loader?limit=20480&name=assets/[name]-[hash].[ext]',
+  // },
 ];
 
 if (isProduction) {
