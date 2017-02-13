@@ -12,7 +12,7 @@ const isProduction = nodeEnv === 'production';
 
 const jsSourcePath = path.join(__dirname, './source/js');
 const buildPath = path.join(__dirname, './build');
-const imgPath = path.join(__dirname, './source/assets/img/raw');
+const imgPath = path.join(__dirname, './source/assets/img');
 const imgSpritePath = path.join(__dirname, './source/assets');
 const sassPath = path.join(__dirname, './source/scss');
 const sourcePath = path.join(__dirname, './source');
