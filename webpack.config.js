@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const SpritesmithPlugin = require('webpack-spritesmith');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -44,6 +45,17 @@ const plugins = [
       ],
       context: sourcePath,
     },
+  }),
+  new SpritesmithPlugin({
+    src: {
+      cwd: path.resolve(imgPath, '/'),
+      glob: '*.png',
+    },
+    target: {
+      image: path.resolve(buildPath, 'assets/images/spritesmith-generated/sprite.png'),
+      css: path.resolve(buildPath, 'assets//sass/vendor/spritesmith.scss'),
+    },
+    retina: '@2x',
   }),
 ];
 
@@ -91,15 +103,13 @@ if (isProduction) {
   );
 
   // Production rules
-  rules.push(
-    {
-      test: /\.scss$/,
-      loader: ExtractTextPlugin.extract({
-        fallbackLoader: 'style-loader',
-        loader: 'css-loader!postcss-loader!sass-loader',
-      }),
-    }
-  );
+  rules.push({
+    test: /\.scss$/,
+    use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: 'css-loader!postcss-loader!sass-loader',
+    }),
+  });
 } else {
   // Development plugins
   plugins.push(
@@ -108,23 +118,21 @@ if (isProduction) {
   );
 
   // Development rules
-  rules.push(
-    {
-      test: /\.scss$/,
-      exclude: /node_modules/,
-      use: [
-        'style-loader',
-        // Using source maps breaks urls in the CSS loader
-        // https://github.com/webpack/css-loader/issues/232
-        // This comment solves it, but breaks testing from a local network
-        // https://github.com/webpack/css-loader/issues/232#issuecomment-240449998
-        // 'css-loader?sourceMap',
-        'css-loader',
-        'postcss-loader',
-        'sass-loader?sourceMap',
-      ],
-    }
-  );
+  rules.push({
+    test: /\.scss$/,
+    exclude: /node_modules/,
+    use: [
+      'style-loader',
+      // Using source maps breaks urls in the CSS loader
+      // https://github.com/webpack/css-loader/issues/232
+      // This comment solves it, but breaks testing from a local network
+      // https://github.com/webpack/css-loader/issues/232#issuecomment-240449998
+      // 'css-loader?sourceMap',
+      'css-loader',
+      'postcss-loader',
+      'sass-loader?sourceMap',
+    ],
+  });
 }
 
 module.exports = {
